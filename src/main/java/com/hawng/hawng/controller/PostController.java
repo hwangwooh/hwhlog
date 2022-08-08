@@ -23,11 +23,11 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/posts")
-    public PostCreate post(@RequestBody @Valid PostCreate  request) throws Exception {
+    public void post(@RequestBody @Valid PostCreate  request) throws Exception {
 
         request.validate();
         postService.write(request);
-        return request;
+
 
     }
 
@@ -38,18 +38,18 @@ public class PostController {
     }
 
 
-    @GetMapping("/posts")
+    @GetMapping("/posts")// 전채 조회
     public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
 
         return postService.getList(postSearch);
     }
 
-    @PatchMapping("/posts/{postId}")
+    @PatchMapping("/posts/{postId}")//수정
     public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit postEdit) {
             postService.edit(postId, postEdit);
     }
 
-    @DeleteMapping("/posts/{postId}")
+    @DeleteMapping("/posts/{postId}")// 삭제
     public void delete(@PathVariable Long postId) {
         postService.delete(postId);
     }
