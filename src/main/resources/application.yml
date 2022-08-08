@@ -1,0 +1,64 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/hwh
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  date:
+    web:
+      pageable:
+        one-indexed-parameters: true
+  jpa:
+    database: h2
+
+  hibernate:
+    ddl-auto: create
+  properties:
+    hibernate:
+      #        show_sql: true
+      format_sql: true
+
+
+
+
+
+
+
+
+#logging.level:
+#  org.hibernate.SQL: debug
+
+
+
+#  org.hibernate.type: trace
+#
+#spring:
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+#
+#  datasource:
+#    url: jdbc:h2:mem:hwh8077
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
+
+#spring:
+#  h2:
+#    console:
+#      enabled: true							# h2 콘솔 사용
+#      path: /h2									# localhost:port/h2 로 접근 가능
+#      settings:
+#        trace: false						# Print additional trace information
+#        web-allow-others: true	# 브라우저로 접근가능하게 하기
+##  profiles:
+##    active: local
+#  # H2 메모리 DB를 위한 설정
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:hwh8077
+#    username: sa
+#    password:
+#    sql-script-encoding: utf-8

@@ -1,0 +1,39 @@
+= 블로그 API
+:doctype: book
+:icons: font
+:toc: left
+:toclevels:: 2
+:sectlinks:
+:source-highlighter: highlightjs
+
+
+== 글 단건조회
+
+=== 요청
+include::{snippets}/post-inquiry/http-request.adoc[]
+include::{snippets}/post-inquiry/path-parameters.adoc[]
+
+=== 응답
+
+include::{snippets}/post-inquiry/http-response.adoc[]
+include::{snippets}/post-inquiry/response-fields.adoc[]
+
+=== CURL
+
+include::{snippets}/post-inquiry/curl-request.adoc[]
+
+
+== 글 작성
+
+=== 요청
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+=== 응답
+
+include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+=== CURL
+
+include::{snippets}/post-create/curl-request.adoc[]
