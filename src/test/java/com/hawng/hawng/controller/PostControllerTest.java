@@ -221,7 +221,7 @@ class PostControllerTest {
         // when
 
         // then
-        mockMvc.perform(MockMvcRequestBuilders.delete("/posts/{postId}",1L)
+        mockMvc.perform(MockMvcRequestBuilders.delete("/posts/{postId}",10000L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andDo(print());
