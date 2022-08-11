@@ -7,6 +7,7 @@ import com.hawng.hawng.domain.Post;
 import com.hawng.hawng.exception.PostNotFound;
 import com.hawng.hawng.request.CommentCreate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 @SpringBootTest
@@ -35,28 +39,103 @@ public class CommentServiceTest {
     public void test1() throws Exception {
 
 
-        Post post2 = postRepository.findById(168L).orElseThrow(() -> new PostNotFound());
-
-
-        
-        Comment comment = Comment.builder().comment_content("내용213123123s").post(post2).build();
-        commentRepository.save(comment);
-        Comment comment2 = Comment.builder().comment_content("내용23s").post(post2).build();
-        commentRepository.save(comment2);
-        Comment comment3 = Comment.builder().comment_content("내용2s").post(post2).build();
-        commentRepository.save(comment3);
+        Post post = Post.builder().title("여기에").content("코멘트써라").
+                build();
+        postRepository.save(post);
 
 
 
-        List<Comment> commentList = em.createQuery("select c from Comment c" +
-                " join fetch c.post p" +
-                        " where p.id = "+post2.getId(),
-                Comment.class).getResultList();
-        for (Comment comment1 : commentList) {
-            System.out.println("comment1 = " + comment1.toString());
-            
-        }
+        CommentCreate commentCreate = CommentCreate.builder().content("코멘트").post(post).build();
+        Comment write = commentService.write(commentCreate);
+        Comment comment = commentRepository.findById(write.getId()).orElseThrow();
+        System.out.println("comment = " + comment);
+
+        Assertions.assertEquals("코멘트",comment.getComment_content());
+
 
 
     }
+    
+
+    
+
+    @Test
+    @DisplayName("해당 글에 코멘트 조회")
+    public void test() throws Exception {
+
+        Post post = Post.builder().title("수정전 타이틀").content("수정전콘텐트").
+                build();
+        postRepository.save(post);
+
+
+        Comment comment2 = Comment.builder().post(post).comment_content("코멘트2")
+                .build();
+        commentRepository.save(comment2);
+        Comment comment3 = Comment.builder().post(post).comment_content("코멘트3")
+                .build();
+        commentRepository.save(comment3);
+        Comment comment4 = Comment.builder().post(post).comment_content("코멘트4")
+                .build();
+        commentRepository.save(comment4);
+
+
+        List<Comment> list = commentService.getList(post.getId());
+        for (Comment comment1 : list) {
+
+            System.out.println("comment = " + comment1);
+
+        }
+
+        Assertions.assertEquals("코멘트2",comment2.getComment_content());
+        Assertions.assertEquals("코멘트3",comment3.getComment_content());
+        Assertions.assertEquals("코멘트4",comment4.getComment_content());
+
+
+    }
+
+    @Test
+    @DisplayName("수정")
+    public void test2() throws Exception {
+        // given
+        Post post = Post.builder().title("수정전 타이틀").content("수정전콘텐트").
+                build();
+        postRepository.save(post);
+
+        Comment comment = Comment.builder().comment_content("코멘트 삭제 용").post(post)
+                .build();
+        commentRepository.save(comment);
+
+        commentService.edit(comment.getId(),"수정 수정");
+        Comment comment2 = commentRepository.findById(comment.getId()).orElseThrow();
+        // when
+
+
+        // then
+
+        Assertions.assertEquals("수정 수정",comment2.getComment_content());
+
+    }
+
+    @Test
+    @DisplayName("코멘스 삭제")
+    public void test4() throws Exception {
+        // given
+
+        Post post = Post.builder().title("삭제용").content("삭제할거야").
+                build();
+        postRepository.save(post);
+
+        Comment comment = Comment.builder().comment_content("코멘트 삭제 용").post(post)
+                .build();
+        commentRepository.save(comment);
+        commentService.delete(comment.getId());
+
+
+        // when
+
+        // then
+    }
+
+
+
 }

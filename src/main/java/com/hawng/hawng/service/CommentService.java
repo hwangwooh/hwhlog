@@ -28,48 +28,46 @@ import java.util.stream.Collectors;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private EntityManager em;
-    public void write( CommentCreate commentCreate) {
+    private final EntityManager em;
+
+
+
+    public Comment write(CommentCreate commentCreate) {
         Comment comment = Comment.builder().post(commentCreate.getPost()).comment_content(commentCreate.getContent()).
                 build();
 
         commentRepository.save(comment);
+        return comment;
     }
 
     public List<Comment> getList(Long postId) {
-        //return postRepository.findAll().stream().map(post -> new PostResponse(post)).collect(Collectors.toList());
-        // Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC,"id"));
-
 
         List<Comment> commentList = em.createQuery("select c from Comment c" +
                         " join fetch c.post p" +
                         " where p.id = "+postId,
                 Comment.class).getResultList();
+
+
         return commentList;
 
     }
 //
-//    @Transactional
-//    public PostResponse edit(Long id, PostEdit postEdit) {
-//        Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFound());
+    @Transactional
+    public void edit(Long id, String comment_content) {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new PostNotFound());
+
+
+        comment.edit(comment_content);
+
+
+    }
 //
-//        PostEditor.PostEditorBuilder postEditorBuilder = post.toEditor();
-//
-//        PostEditor build = postEditorBuilder.title(postEdit.getTitle()).content(postEdit.getContent()).build();
-//        post.edit(build);
-//
-//        PostResponse postResponse = new PostResponse(post);;
-//        return postResponse;
-//
-//    }
-//
-//
-//    public void delete(Long id) {
-//
-//        Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFound());
-//        postRepository.delete(post);
-//
-//    }
+
+    public void delete(Long id) {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("글이 존제 하지 않습니다" ));
+        commentRepository.delete(comment);
+
+    }
 
 
 

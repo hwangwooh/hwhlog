@@ -29,6 +29,13 @@ public class Comment {
         post.getCommentList().add(this);
     }
 
+    public void edit(String comment_content) {
+
+        this.comment_content = comment_content;
+        post.getCommentList().add(this);
+
+    }
+
 
     @Builder
     public Comment(Post post, String comment_content) {
