@@ -3,11 +3,14 @@ package com.hawng.hawng.service;
 import com.hawng.hawng.Repository.PostRepository;
 import com.hawng.hawng.domain.Post;
 import com.hawng.hawng.domain.PostEditor;
+import com.hawng.hawng.domain.QComment;
+import com.hawng.hawng.domain.QPost;
 import com.hawng.hawng.exception.PostNotFound;
 import com.hawng.hawng.request.PostCreate;
 import com.hawng.hawng.request.PostEdit;
 import com.hawng.hawng.request.PostSearch;
 import com.hawng.hawng.response.PostResponse;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.hawng.hawng.domain.QComment.comment;
+
 @Slf4j
 @Service
 @Getter
@@ -25,6 +30,7 @@ public class PostService {
 
 
     private  final  PostRepository postRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
 
     public void write(PostCreate postCreate) {
@@ -69,6 +75,8 @@ public class PostService {
 
         Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFound());
         postRepository.delete(post);
+        //jpaQueryFactory.delete(comment).where(comment.post.id.eq(id)).execute();// c
+
 
     }
 }

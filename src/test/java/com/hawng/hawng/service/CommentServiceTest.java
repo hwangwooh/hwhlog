@@ -14,14 +14,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.hawng.hawng.domain.QComment.comment;
+
 
 @SpringBootTest
 public class CommentServiceTest {
+    @Autowired
+    private  JPAQueryFactory jpaQueryFactory;
 
     @Autowired
     private  PostRepository postRepository;
@@ -121,20 +126,26 @@ public class CommentServiceTest {
     public void test4() throws Exception {
         // given
 
-        Post post = Post.builder().title("삭제용").content("삭제할거야").
+        Post post = Post.builder().title("삭제용22").content("삭제할거야22").
                 build();
+
         postRepository.save(post);
 
-        Comment comment = Comment.builder().comment_content("코멘트 삭제 용").post(post)
-                .build();
+        Comment comment = Comment.builder().comment_content("코멘트 삭제 용222222").post(post).build();
+
         commentRepository.save(comment);
         commentService.delete(comment.getId());
 
+
+      //
 
         // when
 
         // then
     }
+
+
+
 
 
 
