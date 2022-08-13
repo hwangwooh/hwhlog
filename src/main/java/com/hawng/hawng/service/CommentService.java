@@ -3,6 +3,7 @@ package com.hawng.hawng.service;
 
 import com.hawng.hawng.Repository.CommentRepository;
 import com.hawng.hawng.domain.*;
+import com.hawng.hawng.exception.CommentNotFound;
 import com.hawng.hawng.exception.PostNotFound;
 import com.hawng.hawng.request.CommentCreate;
 import com.hawng.hawng.request.PostCreate;
@@ -64,7 +65,7 @@ public class CommentService {
 //
     @Transactional
     public void edit(Long id, String comment_content) {
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new PostNotFound());
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFound());
         comment.edit(comment_content);
 
 
@@ -72,7 +73,7 @@ public class CommentService {
 //
 
     public void delete(Long id) {
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new PostNotFound());
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFound());
         commentRepository.delete(comment);
 
     }

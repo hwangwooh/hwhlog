@@ -25,7 +25,7 @@ public class PostController {
     @PostMapping("/posts")
     public void post(@RequestBody @Valid PostCreate  request) throws Exception {
 
-        request.validate();
+        request.validate(); // 금지어
         postService.write(request);
 
 

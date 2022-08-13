@@ -74,7 +74,7 @@ public class PostService {
     public void delete(Long id) {
 
         Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFound());
-        postRepository.delete(post);
+        postRepository.deleteById(post.getId());
         //jpaQueryFactory.delete(comment).where(comment.post.id.eq(id)).execute();// c
 
 
