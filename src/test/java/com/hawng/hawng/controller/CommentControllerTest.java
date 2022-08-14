@@ -1,7 +1,9 @@
 package com.hawng.hawng.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hawng.hawng.Repository.CommentRepository;
 import com.hawng.hawng.Repository.PostRepository;
+import com.hawng.hawng.domain.Comment;
 import com.hawng.hawng.domain.Post;
 import com.hawng.hawng.request.CommentCreate;
 import com.hawng.hawng.request.PostCreate;
@@ -22,6 +24,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -36,6 +39,9 @@ public class CommentControllerTest {
 
     @Autowired
     PostRepository postRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
 
     @Test
     @DisplayName("코멘트 입력")
@@ -61,6 +67,62 @@ public class CommentControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
 
+    }
+
+    @Test
+    @DisplayName("글 조회시 코멘트 같이 조회")
+    public void test2() throws Exception {
+        // given
+
+        Post post = Post.builder().title("글 조회시 코멘트").content("태스트")
+                .build();
+        postRepository.save(post);
+        Comment comment = Comment.builder().post(post).comment_content("코멘트1").
+                build();
+        commentRepository.save(comment);
+
+        Comment comment2 = Comment.builder().post(post).comment_content("코멘트2").
+                build();
+        commentRepository.save(comment2);
+
+        // when
+
+
+
+
+        // when
+
+        // then
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/posts/{postId}",post.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+
+
+    @Test
+    @DisplayName("해당 코멘트 삭제")
+    public void test3() throws Exception {
+        // given
+        Post post = Post.builder().title("12345678").content("456")
+                .build();
+        postRepository.save(post);
+
+        Comment comment = Comment.builder().post(post).comment_content("코멘트1 삭제한다").
+                build();
+        commentRepository.save(comment);
+
+
+
+
+        // when
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/posts/{postId}/{commentId}",post.getId(),comment.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
 }
