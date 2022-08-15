@@ -5,10 +5,7 @@ import com.hawng.hawng.Repository.CommentRepository;
 import com.hawng.hawng.domain.*;
 import com.hawng.hawng.exception.CommentNotFound;
 import com.hawng.hawng.exception.PostNotFound;
-import com.hawng.hawng.request.CommentCreate;
-import com.hawng.hawng.request.PostCreate;
-import com.hawng.hawng.request.PostEdit;
-import com.hawng.hawng.request.PostSearch;
+import com.hawng.hawng.request.*;
 import com.hawng.hawng.response.PostResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.Getter;
@@ -64,10 +61,9 @@ public class CommentService {
     }
 //
     @Transactional
-    public void edit(Long id, String comment_content) {
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFound());
+    public void edit(Long commentId, String comment_content) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFound());
         comment.edit(comment_content);
-
 
     }
 //

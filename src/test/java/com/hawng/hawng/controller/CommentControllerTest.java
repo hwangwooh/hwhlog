@@ -6,7 +6,9 @@ import com.hawng.hawng.Repository.PostRepository;
 import com.hawng.hawng.domain.Comment;
 import com.hawng.hawng.domain.Post;
 import com.hawng.hawng.request.CommentCreate;
+import com.hawng.hawng.request.CommentEdit;
 import com.hawng.hawng.request.PostCreate;
+import com.hawng.hawng.request.PostEdit;
 import com.hawng.hawng.service.PostService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -123,6 +125,35 @@ public class CommentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
+    }
+
+    @Test
+    @DisplayName("수정")
+    public void test4() throws Exception {
+        // given
+
+        Post post = Post.builder().title("12345678").content("456")
+                .build();
+        postRepository.save(post);
+        Comment comment = Comment.builder().post(post).comment_content("코멘트1 수정한다").
+                build();
+        commentRepository.save(comment);
+        CommentEdit commentEdit = CommentEdit.builder().comment_content("수정사항").build();
+        String json = objectMapper.writeValueAsString(commentEdit);
+        System.out.println("json = " + json);
+        
+        // when
+        
+
+        mockMvc.perform(MockMvcRequestBuilders.patch( "/posts/{postId}/comment/{commentId}",post.getId(),comment.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
+
+
+
     }
 
 }

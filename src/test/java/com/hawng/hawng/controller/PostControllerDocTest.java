@@ -75,7 +75,8 @@ public class PostControllerDocTest {
                 ), PayloadDocumentation.responseFields(
                         PayloadDocumentation.fieldWithPath("id").description("Post Id"),
                         PayloadDocumentation.fieldWithPath("title").description("Post 제목"),
-                        PayloadDocumentation.fieldWithPath("content").description("Post 내용")
+                        PayloadDocumentation.fieldWithPath("content").description("Post 내용"),
+                        PayloadDocumentation.fieldWithPath("commentList").description("Comment")
                         )
 
                 ));

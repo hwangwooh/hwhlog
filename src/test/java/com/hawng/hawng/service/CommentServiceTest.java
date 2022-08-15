@@ -4,6 +4,7 @@ import com.hawng.hawng.Repository.CommentRepository;
 import com.hawng.hawng.Repository.PostRepository;
 import com.hawng.hawng.domain.Comment;
 import com.hawng.hawng.domain.Post;
+import com.hawng.hawng.exception.CommentNotFound;
 import com.hawng.hawng.exception.PostNotFound;
 import com.hawng.hawng.request.CommentCreate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -143,6 +144,8 @@ public class CommentServiceTest {
 
         // then
     }
+
+
 
 
 
