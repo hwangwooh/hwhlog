@@ -41,7 +41,7 @@ public class CommentController {
     }
 
 
-    @PatchMapping("/posts/{postId}/comment/{commentId}")// 아직 미완성
+    @PatchMapping("/posts/{postId}/comment/{commentId}")// 맵핑 주소 이거 맞나 ?
     public void edit(@PathVariable("postId") Long postId,
                      @PathVariable("commentId") Long commentId ,
                      @RequestBody @Valid CommentEdit commentEdit) {

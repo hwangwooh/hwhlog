@@ -9,6 +9,7 @@ import com.hawng.hawng.request.CommentCreate;
 import com.hawng.hawng.request.CommentEdit;
 import com.hawng.hawng.request.PostCreate;
 import com.hawng.hawng.request.PostEdit;
+import com.hawng.hawng.service.CommentService;
 import com.hawng.hawng.service.PostService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,9 @@ public class CommentControllerTest {
 
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    CommentService commentService;
 
     @Test
     @DisplayName("코멘트 입력")
@@ -140,10 +144,9 @@ public class CommentControllerTest {
         commentRepository.save(comment);
         CommentEdit commentEdit = CommentEdit.builder().comment_content("수정사항").build();
         String json = objectMapper.writeValueAsString(commentEdit);
-        System.out.println("json = " + json);
-        
+
         // when
-        
+
 
         mockMvc.perform(MockMvcRequestBuilders.patch( "/posts/{postId}/comment/{commentId}",post.getId(),comment.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -155,5 +158,34 @@ public class CommentControllerTest {
 
 
     }
+
+    @Test
+    @DisplayName("글 수정 조회")
+    public void test6() throws Exception {
+        // given
+        Post post = Post.builder().title("12345678").content("456")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder().
+                title("황우현")
+                .content("950105")
+                .build();
+
+        String s = objectMapper.writeValueAsString(postEdit);
+        System.out.println("@@@@@@@@ = " + s); //{"title":"황우현","content":"950105"}
+        // when
+
+        mockMvc.perform(MockMvcRequestBuilders.patch( "/posts/{postId}",post.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postEdit))
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        // then
+
+    }
+
 
 }

@@ -2,12 +2,12 @@ package com.hawng.hawng.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
-
+@NoArgsConstructor
 @Getter
-@ToString
 public class CommentEdit {
 
 
@@ -18,4 +18,5 @@ public class CommentEdit {
     public CommentEdit(String comment_content) {
         this.comment_content = comment_content;
     }
+
 }

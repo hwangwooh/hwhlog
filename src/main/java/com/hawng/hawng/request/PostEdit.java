@@ -2,11 +2,12 @@ package com.hawng.hawng.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
-
+@NoArgsConstructor
 public class PostEdit {
     @NotBlank(message = "title 입력해주세요")
     public String title;
