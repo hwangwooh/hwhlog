@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.hawng.hawng.domain.QComment.comment;
 
@@ -46,14 +47,26 @@ public class PostService {
 
     public PostResponse get(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFound());
-        PostResponse response = PostResponse.builder().id(post.getId()).title(post.getTitle()).content(post.getContent()).build();
+        PostResponse response = PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .dateTime(post.getDateTime())
+                .build();
         return response;
     }
 
     public List<PostResponse> getList(PostSearch postSearch) {
         //return postRepository.findAll().stream().map(post -> new PostResponse(post)).collect(Collectors.toList());
        // Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC,"id"));
-    return postRepository.getList(postSearch).stream().map(post -> PostResponse.builder().id(post.getId()).title(post.getTitle()).content(post.getContent()).build()).collect(Collectors.toList());
+
+        return postRepository.getList(postSearch).stream().map(post -> PostResponse.builder()
+            .id(post.getId())
+            .title(post.getTitle())
+            .content(post.getContent())
+            .dateTime(post.getDateTime())
+            .build())
+            .collect(Collectors.toList());
     }
 
     @Transactional

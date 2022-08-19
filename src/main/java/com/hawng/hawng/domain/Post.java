@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,15 +28,21 @@ public class Post {
     @Lob
     private String content;
 
+
+    private LocalDate dateTime;
+
     @JsonIgnore
     @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE) // cascade = CascadeType.REMOVE 연관 관계 코멘트도 같이 삭제할수 있음
     private List<Comment> commentList = new ArrayList<>();
 
 
-
+    @PrePersist
+    public void DateTime(){
+        this.dateTime = LocalDate.now();
+    }
 
     @Builder
-    public Post(String title, String content) {
+    public Post(String title, String content,LocalDateTime dateTime) {
         this.title = title;
         this.content = content;
     }
@@ -53,6 +61,8 @@ public class Post {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", dateTime=" + dateTime +
+               // ", commentList=" + commentList +
                 '}';
     }
 }

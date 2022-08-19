@@ -12,7 +12,6 @@
     </el-menu>
   </el-header>
 </template>
-</template>
 
 
 <style scoped>

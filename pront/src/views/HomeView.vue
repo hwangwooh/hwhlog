@@ -6,6 +6,7 @@ import {useRouter} from "vue-router";
 const posts = ref([]);
 const router = useRouter();
 axios.get("/api/posts?page=1&size=5").then((response) => {
+  console.log(response);
   response.data.forEach((r: any) => {
     posts.value.push(r);
   });
@@ -33,8 +34,8 @@ axios.get("/api/posts?page=1&size=5").then((response) => {
       </div>
 
       <div class="sub d-flex">
-       <div class="category">카태고리</div>
-        <div class="regDate">2022-06-01 시간</div>
+       <div class="category">카태고리2</div>
+        <div class="regDate">{{post.dateTime}}</div>
       </div>
     </li>
   </ul>

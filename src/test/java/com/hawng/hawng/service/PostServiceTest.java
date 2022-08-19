@@ -64,7 +64,11 @@ class PostServiceTest {
         // when
         postRepository.save(post);
 
+        Post post2 = postRepository.findById(post.getId()).orElseThrow();
+
+
         PostResponse post1 = postService.get(post.getId());
+        System.out.printf(post1.toString());
         // then
         Assertions.assertNotNull(post1);
 

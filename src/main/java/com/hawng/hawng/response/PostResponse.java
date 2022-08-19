@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collector;
 
@@ -18,6 +20,8 @@ public class PostResponse {
     private final String title;
     private final String content;
 
+    private final LocalDate dateTime;
+
 
 
     public PostResponse(Post post) {
@@ -26,16 +30,18 @@ public class PostResponse {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
+        this.dateTime = post.getDateTime();
 
 
     }
 
 
     @Builder
-    public PostResponse(Long id, String title, String content,List<Comment> comment) {
+    public PostResponse(Long id, String title, String content,LocalDate dateTime) {
         this.id = id;
         this.title = title.substring(0,Math.min(title.length(),10));
         this.content = content;
+        this.dateTime = dateTime;
 
     }
 

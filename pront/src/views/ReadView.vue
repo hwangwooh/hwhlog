@@ -16,6 +16,7 @@ const post = ref({
   id:0,
   title: "",
   content: "",
+  dateTime: "",
 
 });
 const router = useRouter();
@@ -27,6 +28,7 @@ const moveToEdit = () => {
 }
 onMounted(() => {
   axios.get(`/api/posts/${props.postId}`).then((response) => {
+    console.log(response)
     post.value = response.data;
   });
 });
@@ -42,7 +44,7 @@ onMounted(() => {
 
       <div class="sub d-flex">
         <div class="category">개발</div>
-        <div class="regDate">2022-06-01 23:59:59</div>
+        <div class="regDate">{{ post.dateTime }}</div>
       </div>
     </el-col>
   </el-row>
