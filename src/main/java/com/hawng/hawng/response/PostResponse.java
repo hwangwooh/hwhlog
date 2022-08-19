@@ -18,7 +18,7 @@ public class PostResponse {
     private final String title;
     private final String content;
 
-    private final List<Comment> commentList;
+
 
     public PostResponse(Post post) {
 
@@ -26,7 +26,7 @@ public class PostResponse {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.commentList = post.getCommentList();
+
 
     }
 
@@ -36,7 +36,7 @@ public class PostResponse {
         this.id = id;
         this.title = title.substring(0,Math.min(title.length(),10));
         this.content = content;
-        this.commentList = comment;
+
     }
 
 }

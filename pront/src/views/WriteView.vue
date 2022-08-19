@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import axios from "axios";
+import {useRouter} from "vue-router";
 
 const count = ref(0);
 const  title = ref("");
 const  content = ref("");
+
+const router = useRouter();
+
 const write = function () {
-axios.post("http://localhost:8080/posts",{
+axios.post("/api/posts",{
   title : title.value,
   content : content.value
-})
+}).then( () =>{
+    router.replace({name: "home"})
+    });
 
 }
 
@@ -24,8 +30,8 @@ axios.post("http://localhost:8080/posts",{
     <div class="mt-2">
       <el-input v-model="content" type="textarea" rows="20"/>
     </div>
-    <div class="mt-2">
-      <el-button type="primary" @click = "write()"> 글 작성 완료</el-button>
+    <div class="d-flex justify-content-end">
+      <el-button type="primary" @click="write()">작성완료</el-button>
     </div>
   </div>
 

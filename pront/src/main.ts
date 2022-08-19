@@ -6,7 +6,8 @@ import router from "./router";
 import ElementUI from 'element-plus';
 import ElementPlus from 'element-plus';
 
-import "element-plus/dist/index.css"
+import "normalize.css";
+import "element-plus/dist/index.css";
 import "./assets/main.css";
 import "bootstrap/dist/css/bootstrap-utilities.css";
 
