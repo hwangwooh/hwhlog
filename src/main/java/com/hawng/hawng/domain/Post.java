@@ -31,6 +31,11 @@ public class Post {
 
     private LocalDate dateTime;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "postcategory_id")
+    private PostCategory postCategory;
+
+
     @JsonIgnore
     @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE) // cascade = CascadeType.REMOVE 연관 관계 코멘트도 같이 삭제할수 있음
     private List<Comment> commentList = new ArrayList<>();
@@ -42,9 +47,12 @@ public class Post {
     }
 
     @Builder
-    public Post(String title, String content,LocalDateTime dateTime) {
+    public Post(String title, String content,PostCategory postCategory) {
+
         this.title = title;
         this.content = content;
+        this.postCategory = postCategory;
+
     }
     public PostEditor.PostEditorBuilder toEditor(){
         PostEditor.PostEditorBuilder builder = PostEditor.builder().title(title).content(content);
@@ -62,7 +70,8 @@ public class Post {
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", dateTime=" + dateTime +
-               // ", commentList=" + commentList +
+                ", postCategory=" + postCategory +
+         //       ", commentList=" + commentList +
                 '}';
     }
 }

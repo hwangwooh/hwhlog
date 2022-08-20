@@ -27,7 +27,7 @@ public class CommentCreate {
 
     public void validate() {
         if(content.contains("바보")){
-            throw new InvalidRequest("title","제목에 바보를 포함할수 없습니다");
+            throw new InvalidRequest("comment","코멘트에 바보를 포함할수 없습니다");
         }
 
     }

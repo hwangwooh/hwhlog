@@ -18,11 +18,14 @@ public class PostCreate {
     public String title;
     @NotBlank(message = "content 입력해주세요")
     public String content;
+    @NotBlank(message = "Category 입력해주세요")
+    public String category;
 
     @Builder
-    public PostCreate(String title, String content) {
+    public PostCreate(String title, String content,String category) {
         this.title = title;
         this.content = content;
+        this.category = category;
     }
 
     public void validate() {

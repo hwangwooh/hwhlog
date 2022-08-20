@@ -6,13 +6,15 @@ import {useRouter} from "vue-router";
 const count = ref(0);
 const  title = ref("");
 const  content = ref("");
-
+const  category = ref("");
 const router = useRouter();
 
 const write = function () {
 axios.post("/api/posts",{
   title : title.value,
-  content : content.value
+  content : content.value,
+  category : category.value
+
 }).then( () =>{
     router.replace({name: "home"})
     });
@@ -24,6 +26,9 @@ axios.post("/api/posts",{
 <template>
   <div>
     <el-input v-model="title" placeholder="제목을 입력해주세요"/>
+    <div>
+      <el-input v-model="category" placeholder="category"/>
+    </div>
   </div>
 
   <div>

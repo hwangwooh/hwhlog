@@ -26,14 +26,14 @@ public class CommentController {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
-    @PostMapping("/posts/{postId}")
+    @PostMapping("/comment/{postId}")
     public void post(@PathVariable Long postId,
                      @RequestBody @Valid CommentCreate commentCreate) throws Exception {
 
         commentCreate.validate();//금지어
         commentService.write(commentCreate);
     }
-    @DeleteMapping("/posts/{postId}/{commentId}")// 삭제 //수정해야 할듯 ???
+    @DeleteMapping("/comment/{postId}/{commentId}")// 삭제 //수정해야 할듯 ???
     public String delete(@PathVariable Long postId,
                          @PathVariable Long commentId) {
         commentService.delete(commentId);
@@ -41,13 +41,10 @@ public class CommentController {
     }
 
 
-    @PatchMapping("/posts/{postId}/comment/{commentId}")// 맵핑 주소 이거 맞나 ?
+    @PatchMapping("/comment/{postId}/{commentId}")// 맵핑 주소 이거 맞나 ?
     public void edit(@PathVariable("postId") Long postId,
                      @PathVariable("commentId") Long commentId ,
                      @RequestBody @Valid CommentEdit commentEdit) {
-
-
-
 
         System.out.println("commentId = " + commentEdit);
         commentService.edit(commentId, commentEdit.getComment_content());

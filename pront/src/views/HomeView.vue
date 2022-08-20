@@ -34,7 +34,7 @@ axios.get("/api/posts?page=1&size=5").then((response) => {
       </div>
 
       <div class="sub d-flex">
-       <div class="category">카태고리2</div>
+       <div class="category">{{post.category}}</div>
         <div class="regDate">{{post.dateTime}}</div>
       </div>
     </li>

@@ -1,7 +1,9 @@
 package com.hawng.hawng.service;
 
+import com.hawng.hawng.Repository.PostCategoryRepository;
 import com.hawng.hawng.Repository.PostRepository;
 import com.hawng.hawng.domain.Post;
+import com.hawng.hawng.domain.PostCategory;
 import com.hawng.hawng.exception.PostNotFound;
 import com.hawng.hawng.request.PostCreate;
 import com.hawng.hawng.request.PostEdit;
@@ -36,6 +38,9 @@ class PostServiceTest {
     private PostService postService;
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private PostCategoryRepository postCategoryRepository;
     @Test
     @DisplayName("글 작성")
     public void test1() throws Exception {
@@ -167,6 +172,11 @@ class PostServiceTest {
         //  Assertions.assertEquals("존재하지 않는 글입니다", e.getMessage());
 
     }
+
+
+
+
+
 
 
 

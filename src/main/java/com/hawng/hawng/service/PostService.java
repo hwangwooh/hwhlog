@@ -1,10 +1,8 @@
 package com.hawng.hawng.service;
 
+import com.hawng.hawng.Repository.PostCategoryRepository;
 import com.hawng.hawng.Repository.PostRepository;
-import com.hawng.hawng.domain.Post;
-import com.hawng.hawng.domain.PostEditor;
-import com.hawng.hawng.domain.QComment;
-import com.hawng.hawng.domain.QPost;
+import com.hawng.hawng.domain.*;
 import com.hawng.hawng.exception.PostNotFound;
 import com.hawng.hawng.request.PostCreate;
 import com.hawng.hawng.request.PostEdit;
@@ -19,9 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.hawng.hawng.domain.QComment.comment;
 
 @Slf4j
 @Service
@@ -32,11 +27,19 @@ public class PostService {
 
     private  final  PostRepository postRepository;
     private final JPAQueryFactory jpaQueryFactory;
+    private final PostCategoryRepository postCategoryRepository;
 
 
     public void write(PostCreate postCreate) {
         //Post post = new Post(postCreate.getTitle(), postCreate.getContent());
-        Post post = Post.builder().title(postCreate.getTitle()).content(postCreate.getContent()).build();
+        PostCategory postCategory = new PostCategory(postCreate.getCategory());
+        postCategoryRepository.save(postCategory);
+
+        Post post = Post.builder().title(postCreate
+                .getTitle())
+                .content(postCreate.getContent())
+                .postCategory(postCategory)
+                .build();
 
         postRepository.save(post);
 
@@ -47,11 +50,13 @@ public class PostService {
 
     public PostResponse get(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFound());
+
         PostResponse response = PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .dateTime(post.getDateTime())
+                .category(post.getPostCategory().getName())
                 .build();
         return response;
     }
@@ -65,6 +70,7 @@ public class PostService {
             .title(post.getTitle())
             .content(post.getContent())
             .dateTime(post.getDateTime())
+            .category(post.getPostCategory().getName())
             .build())
             .collect(Collectors.toList());
     }

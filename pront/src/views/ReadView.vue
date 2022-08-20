@@ -34,6 +34,7 @@ onMounted(() => {
 });
 
 
+
 </script>
 
 
@@ -43,7 +44,7 @@ onMounted(() => {
       <h2 class="title">{{ post.title }}</h2>
 
       <div class="sub d-flex">
-        <div class="category">개발</div>
+        <div class="category">{{ post.category }}</div>
         <div class="regDate">{{ post.dateTime }}</div>
       </div>
     </el-col>

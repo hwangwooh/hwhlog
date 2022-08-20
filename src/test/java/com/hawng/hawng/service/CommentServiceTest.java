@@ -1,9 +1,11 @@
 package com.hawng.hawng.service;
 
 import com.hawng.hawng.Repository.CommentRepository;
+import com.hawng.hawng.Repository.PostCategoryRepository;
 import com.hawng.hawng.Repository.PostRepository;
 import com.hawng.hawng.domain.Comment;
 import com.hawng.hawng.domain.Post;
+import com.hawng.hawng.domain.PostCategory;
 import com.hawng.hawng.exception.CommentNotFound;
 import com.hawng.hawng.exception.PostNotFound;
 import com.hawng.hawng.request.CommentCreate;
@@ -37,6 +39,9 @@ public class CommentServiceTest {
     private CommentService commentService;
 
     @Autowired
+    private PostCategoryRepository postCategoryRepository;
+
+    @Autowired
     private EntityManager em;
 
 
@@ -57,6 +62,37 @@ public class CommentServiceTest {
         System.out.println("comment = " + comment);
 
         Assertions.assertEquals("코멘트",comment.getComment_content());
+
+
+
+    }
+
+    @Test
+    @DisplayName("카테고리")
+    public void test87() throws Exception
+    {
+        PostCategory postCategory = new PostCategory("개발");
+        postCategoryRepository.save(postCategory);
+        Post post = Post.builder().title("여기에").content("코멘트써라").postCategory(postCategory).
+                build();
+        postRepository.save(post);
+
+        PostCategory postCategory1 = postCategoryRepository.findById(postCategory.getId()).orElseThrow();
+        Post post1 = postRepository.findById(post.getId()).orElseThrow();
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println(postCategory1.toString());
+        System.out.println(post.toString());
+        System.out.println(post1.toString());
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+
+        CommentCreate commentCreate = CommentCreate.builder().content("코멘트").post(post).build();
+        Comment write = commentService.write(commentCreate);
+
+
+
+
+
 
 
 

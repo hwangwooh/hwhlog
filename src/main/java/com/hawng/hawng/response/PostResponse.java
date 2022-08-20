@@ -22,6 +22,8 @@ public class PostResponse {
 
     private final LocalDate dateTime;
 
+    private final String category;
+
 
 
     public PostResponse(Post post) {
@@ -31,17 +33,20 @@ public class PostResponse {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.dateTime = post.getDateTime();
+        this.category = post.getPostCategory().getName();
 
 
     }
 
 
     @Builder
-    public PostResponse(Long id, String title, String content,LocalDate dateTime) {
+    public PostResponse(Long id, String title, String content,LocalDate dateTime,String category) {
         this.id = id;
         this.title = title.substring(0,Math.min(title.length(),10));
         this.content = content;
         this.dateTime = dateTime;
+        this.category = category;
+
 
     }
 
