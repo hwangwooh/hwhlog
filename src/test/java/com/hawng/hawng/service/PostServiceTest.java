@@ -87,10 +87,14 @@ class PostServiceTest {
     public void test3() throws Exception {
         // given
 
+        PostCategory category = new PostCategory("자유");
+        PostCategory save = postCategoryRepository.save(category);
+        PostCategory postCategory = postCategoryRepository.findById(save.getId()).orElseThrow();
 
         List<Post> postList = IntStream.range(1, 31).mapToObj(i -> Post.builder()
                 .title("글 제 목 당"+ i)
                 .content("내용입니당" + i)
+                .postCategory(postCategory)
                 .build()).collect(Collectors.toList());
         postRepository.saveAll(postList);
 

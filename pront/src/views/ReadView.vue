@@ -19,6 +19,10 @@ const post = ref({
   dateTime: "",
 
 });
+const comments = ref([]);
+
+
+
 const router = useRouter();
 const moveToEdit = () => {
   router.push({name: "edit",params: {
@@ -31,9 +35,26 @@ onMounted(() => {
     console.log(response)
     post.value = response.data;
   });
+
+
 });
 
+axios.get(`/api/comment/${props.postId}`).then((response) => {
+  console.log(response)
+  response.data.forEach((r: any) => {
+    comments.value.push(r);
+  });
 
+
+});
+
+const  com_content = ref("");
+const write = function () {
+  axios.post(`/api/comment/${props.postId}`,{
+    content : com_content.value,
+  })
+  router.replace({name: "read"})
+}
 
 </script>
 
@@ -63,6 +84,28 @@ onMounted(() => {
       </div>
     </el-col>
   </el-row>
+
+  <ul>
+    <li v-for="comment in comments" :key="post.id">
+      <div class="comment_content">
+        {{ comment.comment_content }}
+      </div>
+    </li>
+  </ul>
+
+  <div>
+    <div class="mt-2">
+      <el-input v-model="com_content" type="textarea" rows="1"/>
+    </div>
+    <div class="d-flex justify-content-end">
+      <el-button type="primary" @click="write()">코멘트완료</el-button>
+    </div>
+  </div>
+
+
+
+
+
 </template>
 
 <style scoped lang="scss">

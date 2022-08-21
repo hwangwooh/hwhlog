@@ -2,6 +2,7 @@ package com.hawng.hawng.controller;
 
 import com.hawng.hawng.Repository.CommentRepository;
 import com.hawng.hawng.Repository.PostRepository;
+import com.hawng.hawng.domain.Comment;
 import com.hawng.hawng.request.CommentCreate;
 import com.hawng.hawng.request.CommentEdit;
 import com.hawng.hawng.request.PostCreate;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -26,27 +28,33 @@ public class CommentController {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
-    @PostMapping("/comment/{postId}")
+    @PostMapping("/comment/{postId}") // 쓰기
     public void post(@PathVariable Long postId,
                      @RequestBody @Valid CommentCreate commentCreate) throws Exception {
 
         commentCreate.validate();//금지어
-        commentService.write(commentCreate);
+        commentService.write(postId,commentCreate);
     }
-    @DeleteMapping("/comment/{postId}/{commentId}")// 삭제 //수정해야 할듯 ???
-    public String delete(@PathVariable Long postId,
-                         @PathVariable Long commentId) {
+    @GetMapping("/comment/{postId}")
+    public List<Comment> getList(@PathVariable Long postId){
+
+        List<Comment> list = commentService.getList(postId);
+        return list;
+    }
+
+
+    @DeleteMapping("/comment/{commentId}")// 삭제
+    public void delete(@PathVariable Long commentId) {
         commentService.delete(commentId);
-        return "/posts/" + postId;
+
     }
 
 
-    @PatchMapping("/comment/{postId}/{commentId}")// 맵핑 주소 이거 맞나 ?
-    public void edit(@PathVariable("postId") Long postId,
-                     @PathVariable("commentId") Long commentId ,
+    @PatchMapping("/comment/{commentId}")// 수정
+    public void edit(@PathVariable("commentId") Long commentId ,
                      @RequestBody @Valid CommentEdit commentEdit) {
 
-        System.out.println("commentId = " + commentEdit);
+      //  System.out.println("commentId = " + commentEdit);
         commentService.edit(commentId, commentEdit.getComment_content());
 
     }

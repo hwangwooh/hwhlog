@@ -50,18 +50,18 @@ public class CommentServiceTest {
     public void test1() throws Exception {
 
 
-        Post post = Post.builder().title("여기에").content("코멘트써라").
-                build();
-        postRepository.save(post);
+//        Post post = Post.builder().title("여기에").content("코멘트써라").
+//                build();
+//        postRepository.save(post);
 
+        postRepository.findById(33L).orElseThrow()
 
+        //CommentCreate commentCreate = CommentCreate.builder().content("코멘트").post(post).build();
+      //  Comment write = commentService.write(commentCreate);
+   //     Comment comment = commentRepository.findById(write.getId()).orElseThrow();
+      //  System.out.println("comment = " + comment);
 
-        CommentCreate commentCreate = CommentCreate.builder().content("코멘트").post(post).build();
-        Comment write = commentService.write(commentCreate);
-        Comment comment = commentRepository.findById(write.getId()).orElseThrow();
-        System.out.println("comment = " + comment);
-
-        Assertions.assertEquals("코멘트",comment.getComment_content());
+       // Assertions.assertEquals("코멘트",comment.getComment_content());
 
 
 
@@ -87,7 +87,7 @@ public class CommentServiceTest {
 
 
         CommentCreate commentCreate = CommentCreate.builder().content("코멘트").post(post).build();
-        Comment write = commentService.write(commentCreate);
+       // Comment write = commentService.write(commentCreate);
 
 
 

@@ -20,7 +20,12 @@ public class PostCategory {
 
     private String name;
 
-
+    public String getName() {
+        if(this.name == null){
+            this.name = "자유";
+        }
+        return name;
+    }
 
     @OneToMany(mappedBy = "postCategory")
     private List<Post> postList = new ArrayList<>();

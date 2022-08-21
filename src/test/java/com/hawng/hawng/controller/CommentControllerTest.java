@@ -2,9 +2,11 @@ package com.hawng.hawng.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hawng.hawng.Repository.CommentRepository;
+import com.hawng.hawng.Repository.PostCategoryRepository;
 import com.hawng.hawng.Repository.PostRepository;
 import com.hawng.hawng.domain.Comment;
 import com.hawng.hawng.domain.Post;
+import com.hawng.hawng.domain.PostCategory;
 import com.hawng.hawng.request.CommentCreate;
 import com.hawng.hawng.request.CommentEdit;
 import com.hawng.hawng.request.PostCreate;
@@ -48,6 +50,8 @@ public class CommentControllerTest {
 
     @Autowired
     CommentService commentService;
+    @Autowired
+    PostCategoryRepository postCategoryRepository;
 
     @Test
     @DisplayName("코멘트 입력")
@@ -80,16 +84,16 @@ public class CommentControllerTest {
     public void test2() throws Exception {
         // given
 
-        Post post = Post.builder().title("글 조회시 코멘트").content("태스트")
-                .build();
-        postRepository.save(post);
-        Comment comment = Comment.builder().post(post).comment_content("코멘트1").
-                build();
-        commentRepository.save(comment);
-
-        Comment comment2 = Comment.builder().post(post).comment_content("코멘트2").
-                build();
-        commentRepository.save(comment2);
+//        Post post = Post.builder().title("글 조회시 코멘트").content("태스트")
+//                .build();
+//        postRepository.save(post);
+//        Comment comment = Comment.builder().post(post).comment_content("코멘트1").
+//                build();
+//        commentRepository.save(comment);
+//
+//        Comment comment2 = Comment.builder().post(post).comment_content("코멘트2").
+//                build();
+//        commentRepository.save(comment2);
 
         // when
 
@@ -100,7 +104,7 @@ public class CommentControllerTest {
 
         // then
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/posts/{postId}",post.getId())
+        mockMvc.perform(MockMvcRequestBuilders.get("/comment/{postId}",33L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -125,7 +129,7 @@ public class CommentControllerTest {
 
         // when
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/posts/{postId}/{commentId}",post.getId(),comment.getId())
+        mockMvc.perform(MockMvcRequestBuilders.delete("/comment/{commentId}",comment.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -136,7 +140,11 @@ public class CommentControllerTest {
     public void test4() throws Exception {
         // given
 
-        Post post = Post.builder().title("12345678").content("456")
+
+        PostCategory postCategory = new PostCategory("자유");
+        PostCategory save = postCategoryRepository.save(postCategory);
+
+        Post post = Post.builder().title("12342222222225678").content("4522222222226").postCategory(save)
                 .build();
         postRepository.save(post);
         Comment comment = Comment.builder().post(post).comment_content("코멘트1 수정한다").
@@ -148,7 +156,7 @@ public class CommentControllerTest {
         // when
 
 
-        mockMvc.perform(MockMvcRequestBuilders.patch( "/posts/{postId}/comment/{commentId}",post.getId(),comment.getId())
+        mockMvc.perform(MockMvcRequestBuilders.patch( "/comment/{commentId}",comment.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )

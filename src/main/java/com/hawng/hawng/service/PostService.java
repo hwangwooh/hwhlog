@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -32,8 +33,13 @@ public class PostService {
 
     public void write(PostCreate postCreate) {
         //Post post = new Post(postCreate.getTitle(), postCreate.getContent());
-        PostCategory postCategory = new PostCategory(postCreate.getCategory());
-        postCategoryRepository.save(postCategory);
+        List<PostCategory> byName = postCategoryRepository.findByName(postCreate.getContent());
+
+        // 임시
+        PostCategory postCategory;
+        if (postCreate.getContent() == "개발") postCategory = postCategoryRepository.findById(1L).orElseThrow();
+        else postCategory = postCategoryRepository.findById(2L).orElseThrow();
+
 
         Post post = Post.builder().title(postCreate
                 .getTitle())

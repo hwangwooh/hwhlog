@@ -15,13 +15,13 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class CommentCreate {
 
-    public Post Post;
+   // public Post Post;
     @NotBlank(message = "content 입력해주세요")
     public String content;
 
     @Builder
     public CommentCreate(com.hawng.hawng.domain.Post post, String content) {
-        Post = post;
+       // Post = post;
         this.content = content;
     }
 

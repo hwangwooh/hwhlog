@@ -2,11 +2,13 @@ package com.hawng.hawng.service;
 
 
 import com.hawng.hawng.Repository.CommentRepository;
+import com.hawng.hawng.Repository.PostRepository;
 import com.hawng.hawng.domain.*;
 import com.hawng.hawng.exception.CommentNotFound;
 import com.hawng.hawng.exception.PostNotFound;
 import com.hawng.hawng.request.*;
 import com.hawng.hawng.response.PostResponse;
+import com.hawng.hawng.response.commentResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +31,14 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final EntityManager em;
+    private final PostRepository postRepository;
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public Comment write(CommentCreate commentCreate) {
-        Comment comment = Comment.builder().post(commentCreate.getPost()).comment_content(commentCreate.getContent()).
+    public Comment write(Long postId,CommentCreate commentCreate) {
+
+        Post post1 = postRepository.findById(postId).orElseThrow();
+        Comment comment = Comment.builder().post(post1).comment_content(commentCreate.getContent()).
                 build();
 
         commentRepository.save(comment);
@@ -53,8 +58,6 @@ public class CommentService {
                 .join(comment.post, post).fetchJoin()
                 .where(post.id.eq(postId))
                 .fetch();
-
-
 
         return commentList;
 
