@@ -13,7 +13,7 @@ const write = function () {
 axios.post("/api/posts",{
   title : title.value,
   content : content.value,
-  category : category.value
+  category : radio.value.toString(),
 
 }).then( () =>{
     router.replace({name: "home"})
@@ -21,14 +21,23 @@ axios.post("/api/posts",{
 
 }
 
+const radio = ref("")
+
+const radio2 = ref("")
+const radio3 = ref("")
+
+
+
 </script>
 
 <template>
   <div>
     <el-input v-model="title" placeholder="제목을 입력해주세요"/>
-    <div>
-      <el-input v-model="category" placeholder="category"/>
-    </div>
+
+    <el-radio-group v-model="radio">
+      <el-radio :label="1" >자유</el-radio>
+      <el-radio :label="2" >개발</el-radio>
+    </el-radio-group>
   </div>
 
   <div>

@@ -50,11 +50,15 @@ axios.get(`/api/comment/${props.postId}`).then((response) => {
 
 const  com_content = ref("");
 const write = function () {
+  router.go();
   axios.post(`/api/comment/${props.postId}`,{
     content : com_content.value,
   })
-  router.replace({name: "read"})
+  this.$router.go(); /// 새로고침 이거 맞나 ?
+
 }
+
+
 
 </script>
 
@@ -98,7 +102,7 @@ const write = function () {
       <el-input v-model="com_content" type="textarea" rows="1"/>
     </div>
     <div class="d-flex justify-content-end">
-      <el-button type="primary" @click="write()">코멘트완료</el-button>
+      <el-button type="primary" @click="write()">댓글완료</el-button>
     </div>
   </div>
 

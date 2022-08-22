@@ -54,7 +54,7 @@ public class CommentServiceTest {
 //                build();
 //        postRepository.save(post);
 
-        postRepository.findById(33L).orElseThrow()
+        postRepository.findById(33L).orElseThrow();
 
         //CommentCreate commentCreate = CommentCreate.builder().content("코멘트").post(post).build();
       //  Comment write = commentService.write(commentCreate);
