@@ -50,12 +50,12 @@ axios.get(`/api/comment/${props.postId}`).then((response) => {
 
 const  com_content = ref("");
 const write = function () {
-  router.go();
+
   axios.post(`/api/comment/${props.postId}`,{
     content : com_content.value,
   })
-  this.$router.go(); /// 새로고침 이거 맞나 ?
-
+ // this.$router.go(); /// 새로고침 이거 맞나 ?
+  router.go();
 }
 
 
