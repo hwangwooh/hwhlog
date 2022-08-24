@@ -121,14 +121,14 @@ const write = function () {
 }
 .sub {
   margin-top: 10px;
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   .regDate {
     margin-left: 10px;
     color: #6b6b6b;
   }
 }
 .content {
-  font-size: 1rem;
+  font-size: 1.05rem;
   margin-top: 12px;
   color: #616161;
   white-space: break-spaces;

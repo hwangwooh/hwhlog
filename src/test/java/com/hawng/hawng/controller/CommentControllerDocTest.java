@@ -1,13 +1,16 @@
 package com.hawng.hawng.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hawng.hawng.Repository.CommentRepository;
 import com.hawng.hawng.Repository.PostCategoryRepository;
 import com.hawng.hawng.Repository.PostRepository;
+import com.hawng.hawng.domain.Comment;
 import com.hawng.hawng.domain.Post;
 import com.hawng.hawng.domain.PostCategory;
+import com.hawng.hawng.request.CommentCreate;
+import com.hawng.hawng.request.CommentEdit;
 import com.hawng.hawng.request.PostCreate;
 import com.hawng.hawng.request.PostEdit;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,25 +19,13 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.PayloadDocumentation;
-import org.springframework.restdocs.request.ParameterDescriptor;
 import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import static java.lang.reflect.Array.get;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs(uriScheme = "https",uriHost = "api.test.com",uriPort = 443)
 @AutoConfigureMockMvc
-public class PostControllerDocTest {
+public class CommentControllerDocTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -55,6 +46,9 @@ public class PostControllerDocTest {
 
     @Autowired
     PostCategoryRepository postCategoryRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
 
 //    @BeforeEach
 //    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
@@ -73,18 +67,19 @@ public class PostControllerDocTest {
                 .build();
         postRepository.save(post);
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get("/posts/{postId}",post.getId())
+        Comment comment = Comment.builder().post(post).comment_content("test")
+        .build();
+        commentRepository.save(comment);
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get("/comment/{postId}",post.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("post-inquiry", RequestDocumentation.pathParameters(
+                .andDo(print())
+                .andDo(document("comment-inquiry", RequestDocumentation.pathParameters(
                         RequestDocumentation.parameterWithName("postId").description("Post Id")
 
                 ), PayloadDocumentation.responseFields(
-                        PayloadDocumentation.fieldWithPath("id").description("Post Id"),
-                        PayloadDocumentation.fieldWithPath("title").description("Post 제목"),
-                        PayloadDocumentation.fieldWithPath("content").description("Post 내용"),
-                        PayloadDocumentation.fieldWithPath("dateTime").description("작성 시간"),
-                        PayloadDocumentation.fieldWithPath("category").description("카테고리")
+                        PayloadDocumentation.fieldWithPath("[].id").description("comment id"),
+                        PayloadDocumentation.fieldWithPath("[].comment_content").description("comment 내용")
                         )
 
                 ));
@@ -101,26 +96,21 @@ public class PostControllerDocTest {
         Post post = Post.builder().title("조회 title").content("조회 content").postCategory(postCategory)
                 .build();
         postRepository.save(post);
-        PostCreate postCreate = PostCreate.builder().category(postCategory.getId().toString()).content(post.getContent()).title(post.getTitle())
-                .build();
-        String Json = objectMapper.writeValueAsString(postCreate);
+
+        CommentCreate create = CommentCreate.builder().post(post).content("입력 테스트").build();
+        String Json = objectMapper.writeValueAsString(create);
+
 
         // when
-
-
-
-        this.mockMvc.perform(RestDocumentationRequestBuilders.post("/posts").accept(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(RestDocumentationRequestBuilders.post("/comment/{postId}",post.getId()).accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON).content(Json))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document("post-create",
                         PayloadDocumentation.requestFields(
-                                PayloadDocumentation.fieldWithPath("title").description("Post 제목"),
-                                PayloadDocumentation.fieldWithPath("content").description("Post 내용"),
-                                PayloadDocumentation.fieldWithPath("category").description("카테고리")
+                                PayloadDocumentation.fieldWithPath("content").description("comment 내용")
+
                         )
-
-
                 ));
     }
 
@@ -128,15 +118,21 @@ public class PostControllerDocTest {
     @DisplayName("삭제")
     public void test3() throws Exception {
 
-        Post post = Post.builder().title("삭제 title").content("삭제 content")
+        PostCategory postCategory = postCategoryRepository.findById(1L).orElseThrow();
+
+        Post post = Post.builder().title("조회 title").content("조회 content").postCategory(postCategory)
                 .build();
         postRepository.save(post);
 
-        mockMvc.perform(RestDocumentationRequestBuilders.delete("/posts/{postId}",post.getId())
+        Comment comment = Comment.builder().post(post).comment_content("test")
+                .build();
+        commentRepository.save(comment);
+
+        mockMvc.perform(RestDocumentationRequestBuilders.delete("/comment/{commentId}",comment.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("post-delete", RequestDocumentation.pathParameters(
-                        RequestDocumentation.parameterWithName("postId").description("Post Id")
+                .andDo(document("comment-delete", RequestDocumentation.pathParameters(
+                        RequestDocumentation.parameterWithName("commentId").description("comment Id")
 
                 )));
 
@@ -151,21 +147,24 @@ public class PostControllerDocTest {
                 .build();
         postRepository.save(post);
 
+        Comment comment = Comment.builder().post(post).comment_content("test")
+                .build();
+        commentRepository.save(comment);
 
-        PostEdit postEdit = new PostEdit("제목수정입니다 ", "내용 수정입니다");
 
 
-        mockMvc.perform(RestDocumentationRequestBuilders.patch( "/posts/{postId}",post.getId())
+        CommentEdit commentEdit = new CommentEdit("수정 코멘트");
+
+        mockMvc.perform(RestDocumentationRequestBuilders.patch( "/comment/{commentId}",comment.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postEdit))
+                        .content(objectMapper.writeValueAsString(commentEdit))
                 )
                 .andExpect(status().isOk())
                 .andDo(document("post-revise", RequestDocumentation.pathParameters(
-                                RequestDocumentation.parameterWithName("postId").description("Post Id")
+                                RequestDocumentation.parameterWithName("commentId").description("comment Id")
                         ),
                         PayloadDocumentation.requestFields(
-                                PayloadDocumentation.fieldWithPath("title").description("Post 제목"),
-                                PayloadDocumentation.fieldWithPath("content").description("Post 내용")
+                                PayloadDocumentation.fieldWithPath("comment_content").description("comment 내용")
                         )
                 ));
 

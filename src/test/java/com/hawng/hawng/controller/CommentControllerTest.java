@@ -84,18 +84,21 @@ public class CommentControllerTest {
     public void test2() throws Exception {
         // given
 
-//        Post post = Post.builder().title("글 조회시 코멘트").content("태스트")
-//                .build();
-//        postRepository.save(post);
-//        Comment comment = Comment.builder().post(post).comment_content("코멘트1").
-//                build();
-//        commentRepository.save(comment);
-//
-//        Comment comment2 = Comment.builder().post(post).comment_content("코멘트2").
-//                build();
-//        commentRepository.save(comment2);
+        PostCategory postCategory = postCategoryRepository.findById(1L).orElseThrow();
 
-        // when
+        Post post = Post.builder().title("조회 title").content("조회 content").postCategory(postCategory)
+                .build();
+        postRepository.save(post);
+
+        Comment comment = Comment.builder().post(post).comment_content("코멘트1").
+                build();
+        commentRepository.save(comment);
+
+        Comment comment2 = Comment.builder().post(post).comment_content("코멘트2").
+                build();
+        commentRepository.save(comment2);
+
+
 
 
 
@@ -167,33 +170,6 @@ public class CommentControllerTest {
 
     }
 
-    @Test
-    @DisplayName("글 수정 조회")
-    public void test6() throws Exception {
-        // given
-        Post post = Post.builder().title("12345678").content("456")
-                .build();
-        postRepository.save(post);
-
-        PostEdit postEdit = PostEdit.builder().
-                title("황우현")
-                .content("950105")
-                .build();
-
-        String s = objectMapper.writeValueAsString(postEdit);
-        System.out.println("@@@@@@@@ = " + s); //{"title":"황우현","content":"950105"}
-        // when
-
-        mockMvc.perform(MockMvcRequestBuilders.patch( "/posts/{postId}",post.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postEdit))
-                )
-                .andExpect(status().isOk())
-                .andDo(print());
-
-        // then
-
-    }
 
 
 }

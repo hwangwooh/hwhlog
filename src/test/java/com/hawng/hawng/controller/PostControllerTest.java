@@ -120,9 +120,12 @@ class PostControllerTest {
     @DisplayName("글 조회")
     public void test4() throws Exception {
         // given
-        Post post = Post.builder().title("123456789012345678").content("456")
+        PostCategory postCategory = postCategoryRepository.findById(1L).orElseThrow();
+
+        Post post = Post.builder().title("조회 title").content("조회 content").postCategory(postCategory)
                 .build();
         postRepository.save(post);
+
 
         // when
 
@@ -181,7 +184,9 @@ class PostControllerTest {
     @DisplayName("글 수정 조회")
     public void test6() throws Exception {
         // given
-        Post post = Post.builder().title("12345678").content("456")
+        PostCategory postCategory = postCategoryRepository.findById(1L).orElseThrow();
+
+        Post post = Post.builder().title("조회 title").content("조회 content").postCategory(postCategory)
                 .build();
         postRepository.save(post);
 

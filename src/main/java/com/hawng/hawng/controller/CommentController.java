@@ -39,6 +39,7 @@ public class CommentController {
     public List<Comment> getList(@PathVariable Long postId){
 
         List<Comment> list = commentService.getList(postId);
+
         return list;
     }
 
