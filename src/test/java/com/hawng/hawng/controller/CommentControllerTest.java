@@ -56,9 +56,10 @@ public class CommentControllerTest {
     @Test
     @DisplayName("코멘트 입력")
     public void test() throws Exception {
-        Post post = Post.builder().title("수정전 타이틀").content("수정전콘텐트").
-                build();
-        System.out.println("post = " + post);
+        PostCategory postCategory = postCategoryRepository.findById(1L).orElseThrow();
+
+        Post post = Post.builder().title("조회 title").content("조회 content").postCategory(postCategory)
+                .build();
         postRepository.save(post);
 
 
@@ -70,7 +71,7 @@ public class CommentControllerTest {
 
         // when
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/posts/{postId}",post.getId())
+        mockMvc.perform(MockMvcRequestBuilders.post("/comment/{postId}",post.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(Json)
                 )

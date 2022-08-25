@@ -45,9 +45,14 @@ class PostServiceTest {
     @DisplayName("글 작성")
     public void test1() throws Exception {
         // given
-        PostCreate postCreate = PostCreate.builder().title("제목").content("내요용")
-                .build();
+        PostCategory postCategory = postCategoryRepository.findById(1L).orElseThrow();
 
+        Post post = Post.builder().title("조회 title").content("조회 content").postCategory(postCategory)
+                .build();
+        postRepository.save(post);
+
+        PostCreate postCreate = PostCreate.builder().title(post.getTitle()).content(post.getContent()).category(postCategory.getId().toString())
+                .build();
 
         // when
         postService.write(postCreate);
@@ -62,14 +67,17 @@ class PostServiceTest {
     @DisplayName("글 1개 조회")
     public void test2() throws Exception {
         // given
-        Post post = Post.builder().title("123").content("456")
+        PostCategory postCategory = postCategoryRepository.findById(1L).orElseThrow();
+
+        Post post = Post.builder().title("조회 title").content("조회 content").postCategory(postCategory)
                 .build();
+        postRepository.save(post);
 
 
         // when
-        postRepository.save(post);
 
-        Post post2 = postRepository.findById(post.getId()).orElseThrow();
+
+
 
 
         PostResponse post1 = postService.get(post.getId());
@@ -87,9 +95,14 @@ class PostServiceTest {
     public void test3() throws Exception {
         // given
 
-        PostCategory category = new PostCategory("자유");
-        PostCategory save = postCategoryRepository.save(category);
-        PostCategory postCategory = postCategoryRepository.findById(save.getId()).orElseThrow();
+        PostCategory postCategory = postCategoryRepository.findById(1L).orElseThrow();
+
+        Post post = Post.builder().title("조회 title").content("조회 content").postCategory(postCategory)
+                .build();
+        postRepository.save(post);
+
+
+
 
         List<Post> postList = IntStream.range(1, 31).mapToObj(i -> Post.builder()
                 .title("글 제 목 당"+ i)
@@ -113,10 +126,10 @@ class PostServiceTest {
     @DisplayName("글 제목 수정")
     public void test4() throws Exception {
         // given
-        Post post = Post.builder().title("123").content("456")
-                .build();
+        PostCategory postCategory = postCategoryRepository.findById(1L).orElseThrow();
 
-        Post post1 = Post.builder().build();
+        Post post = Post.builder().title("조회 title").content("조회 content").postCategory(postCategory)
+                .build();
         postRepository.save(post);
 
         PostEdit postEdit = PostEdit.builder().

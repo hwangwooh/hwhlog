@@ -50,10 +50,20 @@ class PostControllerTest {
     @Test
     @DisplayName("/post 요청시 Hello World를 출력한다")
     public void test() throws Exception {
+        PostCategory postCategory = postCategoryRepository.findById(1L).orElseThrow();
+
+        Post post = Post.builder().title("조회 title").content("조회 content").postCategory(postCategory)
+                .build();
+        postRepository.save(post);
+
+        PostCreate postCreate = PostCreate.builder().title(post.getTitle()).content(post.getContent()).category(postCategory.getId().toString()).build();
+
+        String Json = objectMapper.writeValueAsString(postCreate);
+
         // given
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\": \"제목입니당.\", \"content\": \"내용입니당.\"}")
+                        .content(Json)
                 )
                 .andExpect(status().isOk())
                // .andExpect(MockMvcResultMatchers.content().string("{}"))
@@ -92,26 +102,17 @@ class PostControllerTest {
     public void test3() throws Exception {
         // given
 
-        PostCreate content = PostCreate.builder().title("제목입니당.").content("내용입니당.").build();
+        PostCategory postCategory = postCategoryRepository.findById(1L).orElseThrow();
 
-
-
+        PostCreate content = PostCreate.builder().title("제목입니당.").content("내용입니당.").category(postCategory.getId().toString()).build();
         String Json = objectMapper.writeValueAsString(content);
-
         // when
-
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(Json)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
-
-        // then
-
-//        Post post = postRepository.findAll().get(0);
-//        Assertions.assertEquals("제목입니당.", post.getTitle());
-//        Assertions.assertEquals("내용입니당.", post.getContent());
     }
 
 
@@ -133,7 +134,7 @@ class PostControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(post.getId()))
-                .andExpect(jsonPath("$.title").value("1234567890"))
+                .andExpect(jsonPath("$.title").value(post.getTitle()))
                 .andExpect(jsonPath("$.content").value(post.getContent()))
                 .andDo(print());
 
@@ -147,11 +148,7 @@ class PostControllerTest {
         // given
 
 
-        PostCategory category2 = new PostCategory("자유");
-        PostCategory category = new PostCategory("개발");
-        postCategoryRepository.save(category2);
-        PostCategory save = postCategoryRepository.save(category);
-        PostCategory postCategory = postCategoryRepository.findById(save.getId()).orElseThrow();
+        PostCategory postCategory = postCategoryRepository.findById(1L).orElseThrow();
 
 
         List<Post> postList = IntStream.range(1, 31).mapToObj(i -> Post.builder()
@@ -271,11 +268,19 @@ class PostControllerTest {
     public void test10() throws Exception {
         // given
 
-        PostCreate content = PostCreate.builder().title("나는 바").content("내용입니당.").build();
+        PostCategory postCategory = postCategoryRepository.findById(1L).orElseThrow();
+
+        Post post = Post.builder().title("조회 title").content("조회 content").postCategory(postCategory)
+                .build();
+        postRepository.save(post);
+
+        PostCreate postCreate = PostCreate.builder().title(post.getTitle()).content(post.getContent()).category(postCategory.getId().toString()).build();
 
 
 
-        String Json = objectMapper.writeValueAsString(content);
+
+
+        String Json = objectMapper.writeValueAsString(postCreate);
 
         // when
 

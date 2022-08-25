@@ -102,16 +102,20 @@ public class CommentControllerDocTest {
 
 
         // when
-        this.mockMvc.perform(RestDocumentationRequestBuilders.post("/comment/{postId}",post.getId()).accept(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(RestDocumentationRequestBuilders.post("/comment/{postId}",post.getId())
+                        .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON).content(Json))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document("post-create",
-                        PayloadDocumentation.requestFields(
-                                PayloadDocumentation.fieldWithPath("content").description("comment 내용")
 
-                        )
-                ));
+                        .andDo(document("comment-create", RequestDocumentation.pathParameters(
+                           RequestDocumentation.parameterWithName("postId").description("Post Id")
+                        //RequestDocumentation.parameterWithName("commentId").description("comment Id")
+                ),
+                PayloadDocumentation.requestFields(
+                        PayloadDocumentation.fieldWithPath("content").description("comment 내용")
+                )
+        ));
     }
 
     @Test
@@ -160,7 +164,10 @@ public class CommentControllerDocTest {
                         .content(objectMapper.writeValueAsString(commentEdit))
                 )
                 .andExpect(status().isOk())
-                .andDo(document("post-revise", RequestDocumentation.pathParameters(
+
+
+                .andDo(document("comment-revise", RequestDocumentation.pathParameters(
+                             //   RequestDocumentation.parameterWithName("postId").description("Post Id"),
                                 RequestDocumentation.parameterWithName("commentId").description("comment Id")
                         ),
                         PayloadDocumentation.requestFields(

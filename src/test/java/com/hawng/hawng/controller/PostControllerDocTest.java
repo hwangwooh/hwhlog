@@ -86,7 +86,6 @@ public class PostControllerDocTest {
                         PayloadDocumentation.fieldWithPath("dateTime").description("작성 시간"),
                         PayloadDocumentation.fieldWithPath("category").description("카테고리")
                         )
-
                 ));
     }
 
@@ -105,11 +104,8 @@ public class PostControllerDocTest {
                 .build();
         String Json = objectMapper.writeValueAsString(postCreate);
 
-        // when
-
-
-
-        this.mockMvc.perform(RestDocumentationRequestBuilders.post("/posts").accept(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(RestDocumentationRequestBuilders.post("/posts")
+                        .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON).content(Json))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -118,10 +114,8 @@ public class PostControllerDocTest {
                                 PayloadDocumentation.fieldWithPath("title").description("Post 제목"),
                                 PayloadDocumentation.fieldWithPath("content").description("Post 내용"),
                                 PayloadDocumentation.fieldWithPath("category").description("카테고리")
-                        )
+                        )));
 
-
-                ));
     }
 
     @Test
