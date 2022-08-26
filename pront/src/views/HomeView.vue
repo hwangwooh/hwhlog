@@ -1,21 +1,41 @@
 <script setup lang="ts">
 import axios from "axios";
-import {ref} from "vue";
+import {defineProps, ref} from "vue";
 import {useRouter} from "vue-router";
 
 const posts = ref([]);
 const router = useRouter();
+
+
 axios.get("/api/posts?page=1&size=5").then((response) => {
-  console.log(response);
+
   response.data.forEach((r: any) => {
     posts.value.push(r);
   });
 
 });
+const click = () => {
+  console.log("c");
+  console.log(current);
+  console.log(pageCount);
 
+}
+const current = ref();
+const pageCount = ref();
+const handleSizeChange = (val: number) => {
+  console.log(`${val} items per page`)
+}
+const handleCurrentChange = (val: number) => {
+  posts.value = [];
+  axios.get(`/api/posts?page= ${val}&size=5`).then((response) => {
+    response.data.forEach((r: any) => {
 
+      posts.value.push(r);
+    });
 
+  });
 
+}
 </script>
 
 <template>
@@ -39,6 +59,22 @@ axios.get("/api/posts?page=1&size=5").then((response) => {
       </div>
     </li>
   </ul>
+
+  <div class="example-pagination-block">
+    <div class="demonstration"></div>
+
+    <el-pagination
+        background layout=" prev, pager, next"
+        :total="50"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+    />
+
+
+  </div>
+
+
+
 
 </template>
 

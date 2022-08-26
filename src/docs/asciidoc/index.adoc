@@ -70,10 +70,10 @@ include::{snippets}/comment-revise/http-response.adoc[]
 include::{snippets}/comment-revise/curl-request.adoc[]
 == 코멘트 삭제
 === 요청
-include::{snippets}/comment-inquiry/http-request.adoc[]
-include::{snippets}/comment-inquiry/path-parameters.adoc[]
+include::{snippets}/comment-delete/http-request.adoc[]
+include::{snippets}/comment-delete/path-parameters.adoc[]
 === 응답
-include::{snippets}/comment-inquiry/http-response.adoc[]
+include::{snippets}/comment-delete/http-response.adoc[]
 === CURL
-include::{snippets}/comment-inquiry/curl-request.adoc[]
+include::{snippets}/comment-delete/curl-request.adoc[]
 

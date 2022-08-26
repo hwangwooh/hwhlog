@@ -182,6 +182,22 @@ public class CommentServiceTest {
     }
 
 
+    @Test
+    @DisplayName("코멘스 삭제")
+    public void test666() throws Exception {
+        // given
+        PostCategory postCategory = new PostCategory("자유");
+        postCategoryRepository.save(postCategory);
+        PostCategory postCategory2 = new PostCategory("개발");
+        postCategoryRepository.save(postCategory2);
+
+        //
+
+        // when
+
+        // then
+    }
+
 
 
 

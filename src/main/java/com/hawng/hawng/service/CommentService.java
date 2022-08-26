@@ -48,10 +48,6 @@ public class CommentService {
 
     public List<Comment> getList(Long postId) {
 
-//        List<Comment> commentList = em.createQuery("select c from Comment c" +
-//                        " join fetch c.post p" +
-//                        " where p.id = "+postId,
-//                Comment.class).getResultList();
 
         List<Comment> commentList = jpaQueryFactory
                 .selectFrom(comment)
