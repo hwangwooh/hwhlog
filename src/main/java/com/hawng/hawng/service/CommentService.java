@@ -2,6 +2,7 @@ package com.hawng.hawng.service;
 
 
 import com.hawng.hawng.Repository.CommentRepository;
+import com.hawng.hawng.Repository.CommentRepositoryCustom;
 import com.hawng.hawng.Repository.PostRepository;
 import com.hawng.hawng.domain.*;
 import com.hawng.hawng.exception.CommentNotFound;
@@ -35,6 +36,8 @@ public class CommentService {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    private final CommentRepositoryCustom commentRepositoryCustom;
+
     public Comment write(Long postId,CommentCreate commentCreate) {
 
         Post post1 = postRepository.findById(postId).orElseThrow();
@@ -47,16 +50,7 @@ public class CommentService {
     }
 
     public List<Comment> getList(Long postId) {
-
-
-        List<Comment> commentList = jpaQueryFactory
-                .selectFrom(comment)
-                .join(comment.post, post).fetchJoin()
-                .where(post.id.eq(postId))
-                .fetch();
-
-        return commentList;
-
+        return commentRepositoryCustom.getList(postId);
     }
 //
     @Transactional
