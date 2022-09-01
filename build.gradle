@@ -50,6 +50,8 @@ dependencies {
 
 	asciidoctorExt "org.springframework.restdocs:spring-restdocs-asciidoctor:${projectversion}"
 	testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc:${projectversion}"
+
+	implementation 'com.google.code.gson:gson:2.9.0'
 }
 
 
