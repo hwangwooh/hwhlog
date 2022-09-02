@@ -17,11 +17,18 @@ public class KaKaoController {
     @Autowired
     private final KaKaoService kaKaoService;
 
+//    @ResponseBody
+//    @GetMapping("/kakao")
+//    public void kakaoCallback(@RequestParam String code) {
+//        System.out.println("kakaoCallback =  " +code);
+//        String kakaoAccessToken = kaKaoService.getKakaoAccessToken(code);
+//        System.out.printf("kakaoAccessToken   =  " + kakaoAccessToken);
+//        kaKaoService.createKakaoUser(kakaoAccessToken);
+//    }
+
     @ResponseBody
     @GetMapping("/kakao")
     public void kakaoCallback(@RequestParam String code) {
         System.out.println("kakaoCallback =  " +code);
-        String kakaoAccessToken = kaKaoService.getKakaoAccessToken(code);
-        System.out.printf("kakaoAccessToken   =  " + kakaoAccessToken);
     }
 }

@@ -3,8 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import WriteView from "../views/WriteView.vue";
 import ReadView from "../views/ReadView.vue";
 import EditView from "../views/EditView.vue";
-
-
+import KakaoView from "../views/KakaoOauth.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +29,13 @@ const router = createRouter({
       path: "/edit/:postId",
       name: "edit",
       component: EditView,
+      props: true,
+    }
+    ,
+    {
+      path: "/Kakaoapi",
+      name: "Kakao",
+      component: KakaoView,
       props: true,
     }
 
