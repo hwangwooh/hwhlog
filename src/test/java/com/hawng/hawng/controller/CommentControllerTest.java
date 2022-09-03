@@ -37,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs(uriScheme = "https",uriHost = "api.test.com",uriPort = 443)
 @AutoConfigureMockMvc
 public class CommentControllerTest {
+
     @Autowired
     MockMvc mockMvc;
     @Autowired

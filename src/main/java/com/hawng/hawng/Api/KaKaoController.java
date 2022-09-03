@@ -14,7 +14,7 @@ import java.util.Map;
 @RequestMapping("/oauth")
 public class KaKaoController {
 
-    @Autowired
+
     private final KaKaoService kaKaoService;
 
 //    @ResponseBody
