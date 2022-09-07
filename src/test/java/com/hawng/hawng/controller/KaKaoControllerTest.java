@@ -33,17 +33,20 @@ public class KaKaoControllerTest {
     KaKaoController kaKaoController;
     @Autowired
     ObjectMapper objectMapper;
-
+//w3hdLMYh5pB_CKkzdCDnkmvUT08sIuwbpGTOUdugJA7ZnjkJ7XDPxBskbv0QvT9GHXQdoAopcFAAAAGDGGbPLA
     @Test
     @DisplayName("카카오 aip")
     public void test() throws Exception {
 
+        String kakaoAccessToken = kaKaoService.getKakaoAccessToken("w3hdLMYh5pB_CKkzdCDnkmvUT08sIuwbpGTOUdugJA7ZnjkJ7XDPxBskbv0QvT9GHXQdoAopcFAAAAGDGGbPLA");
+        kaKaoService.createKakaoUser(kakaoAccessToken);
 
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/kakao")
-                        .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString("임시")))
-                .andExpect(status().isOk())
-                .andDo(print());
+//
+//        mockMvc.perform(MockMvcRequestBuilders.get("/kakao")
+//                        .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString("임시")))
+//                .andExpect(status().isOk())
+//                .andDo(print());
 
 
 
